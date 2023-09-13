@@ -31,19 +31,19 @@ var (
 var (
 	envs = map[string]PublicConfig{
 		"local": {
-			MySQLUser:     "local-clinica",
+			MySQLUser:     "local-clinica-user",
 			MySQLHost:     "localhost",
 			MySQLPort:     "3606",
 			MySQLDatabase: "local-clinica-database",
 		},
 		"dev": {
-			MySQLUser:     "dev-clinica",
+			MySQLUser:     "dev-clinica-user",
 			MySQLHost:     "localhost",
 			MySQLPort:     "3607",
 			MySQLDatabase: "dev-clinica-database",
 		},
 		"prod": {
-			MySQLUser:     "prod-clinica",
+			MySQLUser:     "prod-clinica-user",
 			MySQLHost:     "localhost",
 			MySQLPort:     "3608",
 			MySQLDatabase: "prod-clinica-database",
