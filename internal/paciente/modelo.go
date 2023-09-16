@@ -3,6 +3,7 @@ package paciente
 import "time"
 
 type Paciente struct {
+	ID          int       `json:"id"`
 	Nombre      string    `json:"nombre"`
 	Apellido    string    `json:"apellido"`
 	Domicilio   string    `json:"domicilio"`

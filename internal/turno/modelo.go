@@ -7,6 +7,7 @@ import (
 )
 
 type Turno struct {
+	ID          int                   `json:"id"`
 	Paciente    paciente.Paciente     `json:"paciente"`
 	Odontologo  odontologo.Odontologo `json:"odontologo"`
 	FechaYHora  time.Time             `json:"fecha_y_hora"`
