@@ -39,7 +39,7 @@ func (s *SqlStore) Save(turno modelo.Turno) (modelo.Turno, error) {
 	}
 
 	// guardo el turno
-	res, err := s.DB.Exec("INSERT INTO turnos (paciente_id, odontologo_id, fecha_hora, descripcion) VALUES (%d, %d, %s, %s)",
+	res, err := s.DB.Exec("INSERT INTO turnos (paciente_id, odontologo_id, fecha_hora, descripcion) VALUES (%d, %d, %s, %s);",
 		turno.Paciente.ID, turno.Odontologo.ID, turno.FechaYHora, turno.Descripcion)
 	if err != nil {
 		fmt.Println("Error al ejecutar la consulta:", err)
@@ -54,6 +54,30 @@ func (s *SqlStore) Save(turno modelo.Turno) (modelo.Turno, error) {
 		return modelo.Turno{}, err
 	}
 	turno.ID = int(aux)
+
+	return turno, nil
+}
+
+func (s *SqlStore) GetByID(id int) (modelo.Turno, error) {
+	var turno modelo.Turno
+
+	// obtengo el turno
+	res := s.DB.QueryRow("SELECT t.id, p.id, p.nombre, p.apellido, p.domicilio, p.dni, p.fecha_de_alta, "+
+		"o.id, o.nombre, o.apellido, o.matricula, t.fecha_hora, t.descripcion "+
+		"FROM turnos t INNER JOIN pacientes p ON t.paciente_id = p.id "+
+		"INNER JOIN odontologos o ON t.odontologo_id = o.id WHERE id = ?", id)
+	err := res.Scan(&turno.ID, &turno.Paciente.ID, &turno.Paciente.Nombre, &turno.Paciente.Apellido, &turno.Paciente.Domicilio, &turno.Paciente.DNI,
+		&turno.Paciente.FechaDeAlta, &turno.Odontologo.ID, &turno.Odontologo.Nombre, &turno.Odontologo.Apellido, &turno.Odontologo.Matricula,
+		&turno.FechaYHora, &turno.Descripcion)
+
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			fmt.Println("El turno no existe en la base de datos:", err)
+		} else {
+			fmt.Println("Error al ejecutar la consulta:", err)
+		}
+		return modelo.Turno{}, err
+	}
 
 	return turno, nil
 }

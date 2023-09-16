@@ -4,18 +4,24 @@ import (
 	"github.com/gin-gonic/gin"
 	modelo "grupo-siete-go/internal/turno"
 	"net/http"
+	"strconv"
 )
 
 type TurnoCreator interface {
 	Save(turno modelo.Turno) (modelo.Turno, error)
 }
 
-type TurnoHandler struct {
-	turnoCreator TurnoCreator
+type TurnoGetter interface {
+	GetByID(id int) (modelo.Turno, error)
 }
 
-func NewTurnoHandler(creator TurnoCreator) *TurnoHandler {
-	return &TurnoHandler{turnoCreator: creator}
+type TurnoHandler struct {
+	turnoCreator TurnoCreator
+	turnoGetter  TurnoGetter
+}
+
+func NewTurnoHandler(creator TurnoCreator, getter TurnoGetter) *TurnoHandler {
+	return &TurnoHandler{turnoCreator: creator, turnoGetter: getter}
 }
 
 func (th *TurnoHandler) Save(ctx *gin.Context) {
@@ -35,4 +41,24 @@ func (th *TurnoHandler) Save(ctx *gin.Context) {
 
 	// OK
 	ctx.JSON(http.StatusCreated, savedTurno)
+}
+
+func (th *TurnoHandler) GetByID(ctx *gin.Context) {
+	// obtengo el id del turno a buscar
+	strID := ctx.Param("id")
+	ID, err := strconv.Atoi(strID)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	// busco el turno
+	turno, err := th.turnoGetter.GetByID(ID)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	// OK
+	ctx.JSON(http.StatusOK, turno)
 }
