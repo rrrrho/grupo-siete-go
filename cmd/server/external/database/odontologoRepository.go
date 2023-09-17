@@ -6,15 +6,15 @@ import (
 	"grupo-siete-go/internal/odontologo"
 )
 
-type SqlStore struct {
-	*sql.DB 
+type OdontologoStore struct {
+	*sql.DB
 }
 
-func NewDatabase(db *sql.DB) *SqlStore {
-	return &SqlStore{db}
+func NewDatabase(db *sql.DB) *OdontologoStore {
+	return &OdontologoStore{db}
 }
 
-func (s *SqlStore) GetByID(id int) (odontologo.Odontologo, error) {
+func (s *OdontologoStore) GetByID(id int) (odontologo.Odontologo, error) {
 	var foundOdontologo odontologo.Odontologo
 
 	query := fmt.Sprintf("SELECT * FROM odontologos WHERE id = %d", id)
@@ -26,7 +26,7 @@ func (s *SqlStore) GetByID(id int) (odontologo.Odontologo, error) {
 	return foundOdontologo, nil
 }
 
-func (s *SqlStore) Modify(id int, odontologoInput odontologo.Odontologo) (odontologo.Odontologo, error) {
+func (s *OdontologoStore) Modify(id int, odontologoInput odontologo.Odontologo) (odontologo.Odontologo, error) {
 	query := fmt.Sprintf("UPDATE odontologos SET nombre=%s, apellido=%s, matricula=%s WHERE ID=%d", odontologoInput.Nombre, odontologoInput.Apellido, odontologoInput.Matricula, odontologoInput.ID)
 	stmt, err := s.DB.Prepare(query)
 	if err != nil {
@@ -40,7 +40,7 @@ func (s *SqlStore) Modify(id int, odontologoInput odontologo.Odontologo) (odonto
 	return odontologoInput, nil
 }
 
-func (s *SqlStore) Save(odontologoInput odontologo.Odontologo) (odontologo.Odontologo, error) {
+func (s *OdontologoStore) Save(odontologoInput odontologo.Odontologo) (odontologo.Odontologo, error) {
 	query := fmt.Sprintf("INSERT INTO odontologos (nombre, apellido, matricula) VALUES(%s, %s, %s)", odontologoInput.Nombre, odontologoInput.Apellido, odontologoInput.Matricula)
 	stmt, err := s.DB.Prepare(query)
 	if err != nil {
@@ -60,7 +60,7 @@ func (s *SqlStore) Save(odontologoInput odontologo.Odontologo) (odontologo.Odont
 	return odontologoInput, nil
 }
 
-func (s *SqlStore) Delete(id int) (string, error) {
+func (s *OdontologoStore) Delete(id int) (string, error) {
 	resultString := ""
 	query := fmt.Sprintf("DELETE FROM odontologos WHERE id=%d", id)
 	stmt, err := s.DB.Prepare(query)

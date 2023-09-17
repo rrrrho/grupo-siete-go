@@ -33,19 +33,19 @@ var (
 		"local": {
 			MySQLUser:     "local-clinica-user",
 			MySQLHost:     "localhost",
-			MySQLPort:     "3606",
+			MySQLPort:     "3306",
 			MySQLDatabase: "local-clinica-database",
 		},
 		"dev": {
 			MySQLUser:     "dev-clinica-user",
 			MySQLHost:     "localhost",
-			MySQLPort:     "3607",
+			MySQLPort:     "3307",
 			MySQLDatabase: "dev-clinica-database",
 		},
 		"prod": {
 			MySQLUser:     "prod-clinica-user",
 			MySQLHost:     "localhost",
-			MySQLPort:     "3608",
+			MySQLPort:     "3308",
 			MySQLDatabase: "prod-clinica-database",
 		},
 	}

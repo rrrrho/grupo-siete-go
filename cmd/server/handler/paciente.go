@@ -19,15 +19,15 @@ func (h *PacienteHandler) GetByID(ctx *gin.Context) {
 	id := ctx.Param("id")
 	ID, err := strconv.Atoi(id)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, err.Error())
+		ctx.JSON(http.StatusBadRequest, err.Error())
 		return
 	}
 	paciente, err := h.service.GetByID(ID)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, err.Error())
+		ctx.JSON(http.StatusInternalServerError, err.Error())
 		return
 	}
-	c.JSON(http.StatusOK, paciente)
+	ctx.JSON(http.StatusOK, paciente)
 }
 func (h *PacienteHandler) Save(ctx *gin.Context) {
 	var pacienteInput paciente.Paciente

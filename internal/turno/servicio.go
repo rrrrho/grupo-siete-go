@@ -37,6 +37,6 @@ func (s *Service) Delete(id int) (string, error) {
 	return s.repository.Delete(id)
 }
 
-func (s *Service) GetByDNI(dni string, matricula string) ([]Turno, error) {
+func (s *Service) GetByDNI(dni string) ([]Turno, error) {
 	return s.repository.GetByDNI(dni)
 }

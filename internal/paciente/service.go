@@ -1,6 +1,8 @@
 package paciente
 
-import "errors"
+import (
+	"errors"
+)
 
 type Service struct {
 	repository RepositoryInterface
@@ -54,7 +56,7 @@ func (s *Service) Update(id int, pacienteInput Paciente) (Paciente, error) {
 	if pacienteInput.DNI != "" {
 		pacienteToUpdate.DNI = pacienteInput.DNI
 	}
-	if !pacienteInput.FechaDeAlta.IsZero() {
+	if pacienteInput.FechaDeAlta != "" {
 		pacienteToUpdate.FechaDeAlta = pacienteInput.FechaDeAlta
 	}
 	paciente, err := s.repository.Modify(id, pacienteToUpdate)

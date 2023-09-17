@@ -5,12 +5,12 @@ import (
 	"fmt"
 )
 
-type Repository struct {
+type PacienteStore struct {
 	*sql.DB
 }
 
-func NewDatabase(db *sql.DB) *Repository {
-	return &Repository{db}
+func NewPacienteDatabase(db *sql.DB) *PacienteStore {
+	return &PacienteStore{db}
 }
 
 type RepositoryInterface interface {
@@ -20,7 +20,7 @@ type RepositoryInterface interface {
 	Delete(id int) error
 }
 
-func (r *Repository) GetByID(id int) (Paciente, error) {
+func (r *PacienteStore) GetByID(id int) (Paciente, error) {
 	var foundPaciente Paciente
 
 	query := fmt.Sprintf("SELECT * FROM pacientes WHERE id = %d", id)
@@ -32,7 +32,7 @@ func (r *Repository) GetByID(id int) (Paciente, error) {
 	return foundPaciente, nil
 }
 
-func (r *Repository) Save(pacienteInput Paciente) (Paciente, error) {
+func (r *PacienteStore) Save(pacienteInput Paciente) (Paciente, error) {
 	query := fmt.Sprintf("INSERT INTO pacientes (nombre, apellido, domicilio, dni, fecha_de_alta) VALUES(%r, %r, %r, %r, %r)", pacienteInput.Nombre, pacienteInput.Apellido, pacienteInput.Domicilio, pacienteInput.DNI, pacienteInput.FechaDeAlta)
 	stmt, err := r.DB.Prepare(query)
 	if err != nil {
@@ -52,7 +52,7 @@ func (r *Repository) Save(pacienteInput Paciente) (Paciente, error) {
 	return pacienteInput, nil
 }
 
-func (r *Repository) Modify(id int, pacienteInput Paciente) (Paciente, error) {
+func (r *PacienteStore) Modify(id int, pacienteInput Paciente) (Paciente, error) {
 	query := fmt.Sprintf("UPDATE pacientes SET nombre=%r, apellido=%r, domicilio=%r, dni=%r, fecha_de_alta=%r WHERE ID=%d", pacienteInput.Nombre, pacienteInput.Apellido, pacienteInput.Domicilio, pacienteInput.DNI, pacienteInput.FechaDeAlta, id)
 	stmt, err := r.DB.Prepare(query)
 	if err != nil {
@@ -66,7 +66,7 @@ func (r *Repository) Modify(id int, pacienteInput Paciente) (Paciente, error) {
 	return pacienteInput, nil
 }
 
-func (r *Repository) Delete(id int) error {
+func (r *PacienteStore) Delete(id int) error {
 	query := fmt.Sprintf("DELETE FROM pacientes WHERE id=%d", id)
 	stmt, err := r.DB.Prepare(query)
 	if err != nil {

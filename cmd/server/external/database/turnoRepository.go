@@ -7,15 +7,15 @@ import (
 	modelo "grupo-siete-go/internal/turno"
 )
 
-type SqlStore struct {
+type TurnoStore struct {
 	*sql.DB
 }
 
-func NewDatabase(db *sql.DB) *SqlStore {
-	return &SqlStore{db}
+func NewTurnoDatabase(db *sql.DB) *TurnoStore {
+	return &TurnoStore{db}
 }
 
-func (s *SqlStore) Save(turno modelo.Turno) (modelo.Turno, error) {
+func (s *TurnoStore) Save(turno modelo.Turno) (modelo.Turno, error) {
 	// valido que exista el paciente
 	_, err := s.DB.Query(fmt.Sprintf("SELECT * FROM pacientes WHERE id = %d;", turno.Paciente.ID))
 	if err != nil {
@@ -39,33 +39,40 @@ func (s *SqlStore) Save(turno modelo.Turno) (modelo.Turno, error) {
 	}
 
 	// guardo el turno
-	res, err := s.DB.Exec("INSERT INTO turnos (paciente_id, odontologo_id, fecha_hora, descripcion) VALUES (%d, %d, %s, %s);",
+	res, err := s.DB.Exec("INSERT INTO turnos (paciente_id, odontologo_id, fecha_hora, descripcion) VALUES (?, ?, ?, ?);",
 		turno.Paciente.ID, turno.Odontologo.ID, turno.FechaYHora, turno.Descripcion)
 	if err != nil {
 		fmt.Println("Error al ejecutar la consulta:", err)
 		return modelo.Turno{}, err
 	}
 
-	// obtengo el ID del turno guardado y lo seteo al turno del parametro para devolverlo
-	var aux int64
-	aux, err = res.LastInsertId()
+	// busco el turno guardado
+	savedID, err := res.LastInsertId()
 	if err != nil {
 		fmt.Println("Error al ejecutar la consulta:", err)
 		return modelo.Turno{}, err
 	}
-	turno.ID = int(aux)
 
-	return turno, nil
+	var savedTurno modelo.Turno
+	err = s.DB.QueryRow("SELECT t.id, p.id, p.nombre, p.apellido, p.domicilio, p.dni, p.fecha_de_alta, "+
+		"o.id, o.nombre, o.apellido, o.matricula, t.fecha_hora, t.descripcion "+
+		"FROM turnos t INNER JOIN pacientes p ON t.paciente_id = p.id "+
+		"INNER JOIN odontologos o ON t.odontologo_id = o.id WHERE t.id = ?", savedID).Scan(&savedTurno.ID, &savedTurno.Paciente.ID,
+		&savedTurno.Paciente.Nombre, &savedTurno.Paciente.Apellido, &savedTurno.Paciente.Domicilio, &savedTurno.Paciente.DNI,
+		&savedTurno.Paciente.FechaDeAlta, &savedTurno.Odontologo.ID, &savedTurno.Odontologo.Nombre, &savedTurno.Odontologo.Apellido,
+		&savedTurno.Odontologo.Matricula, &savedTurno.FechaYHora, &savedTurno.Descripcion)
+
+	return savedTurno, nil
 }
 
-func (s *SqlStore) GetByID(id int) (modelo.Turno, error) {
+func (s *TurnoStore) GetByID(id int) (modelo.Turno, error) {
 	var turno modelo.Turno
 
 	// obtengo el turno
 	res := s.DB.QueryRow("SELECT t.id, p.id, p.nombre, p.apellido, p.domicilio, p.dni, p.fecha_de_alta, "+
 		"o.id, o.nombre, o.apellido, o.matricula, t.fecha_hora, t.descripcion "+
 		"FROM turnos t INNER JOIN pacientes p ON t.paciente_id = p.id "+
-		"INNER JOIN odontologos o ON t.odontologo_id = o.id WHERE id = ?", id)
+		"INNER JOIN odontologos o ON t.odontologo_id = o.id WHERE t.id = ?", id)
 	err := res.Scan(&turno.ID, &turno.Paciente.ID, &turno.Paciente.Nombre, &turno.Paciente.Apellido, &turno.Paciente.Domicilio, &turno.Paciente.DNI,
 		&turno.Paciente.FechaDeAlta, &turno.Odontologo.ID, &turno.Odontologo.Nombre, &turno.Odontologo.Apellido, &turno.Odontologo.Matricula,
 		&turno.FechaYHora, &turno.Descripcion)
@@ -82,9 +89,9 @@ func (s *SqlStore) GetByID(id int) (modelo.Turno, error) {
 	return turno, nil
 }
 
-func (s *SqlStore) Replace(turno modelo.Turno) (modelo.Turno, error) {
+func (s *TurnoStore) Replace(turno modelo.Turno) (modelo.Turno, error) {
 	// valido que exista el turno
-	_, err := s.DB.Query(fmt.Sprintf("SELECT * FROM turnos WHERE id = %d;", turno.ID))
+	_, err := s.DB.Query("SELECT * FROM turnos WHERE id = ?", turno.ID)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			fmt.Println("El turno no existe en la base de datos:", err)
@@ -95,7 +102,7 @@ func (s *SqlStore) Replace(turno modelo.Turno) (modelo.Turno, error) {
 	}
 
 	// reemplazo el turno
-	_, err = s.DB.Exec("UPDATE turnos SET paciente_id = %d, odontologo_id = %d, fecha_hora = %s, descripcion = %s WHERE id = %d",
+	_, err = s.DB.Exec("UPDATE turnos SET paciente_id = ?, odontologo_id = ?, fecha_hora = ?, descripcion = ? WHERE id = ?",
 		turno.Paciente.ID, turno.Odontologo.ID, turno.FechaYHora, turno.Descripcion, turno.ID)
 
 	if err != nil {
@@ -103,12 +110,21 @@ func (s *SqlStore) Replace(turno modelo.Turno) (modelo.Turno, error) {
 		return modelo.Turno{}, err
 	}
 
-	return turno, nil
+	var updatedTurno modelo.Turno
+	err = s.DB.QueryRow("SELECT t.id, p.id, p.nombre, p.apellido, p.domicilio, p.dni, p.fecha_de_alta, "+
+		"o.id, o.nombre, o.apellido, o.matricula, t.fecha_hora, t.descripcion "+
+		"FROM turnos t INNER JOIN pacientes p ON t.paciente_id = p.id "+
+		"INNER JOIN odontologos o ON t.odontologo_id = o.id WHERE t.id = ?", turno.ID).Scan(&updatedTurno.ID, &updatedTurno.Paciente.ID,
+		&updatedTurno.Paciente.Nombre, &updatedTurno.Paciente.Apellido, &updatedTurno.Paciente.Domicilio, &updatedTurno.Paciente.DNI,
+		&updatedTurno.Paciente.FechaDeAlta, &updatedTurno.Odontologo.ID, &updatedTurno.Odontologo.Nombre, &updatedTurno.Odontologo.Apellido,
+		&updatedTurno.Odontologo.Matricula, &updatedTurno.FechaYHora, &updatedTurno.Descripcion)
+
+	return updatedTurno, nil
 }
 
-func (s *SqlStore) Update(id int, turno modelo.Turno) (modelo.Turno, error) {
+func (s *TurnoStore) Update(id int, turno modelo.Turno) (modelo.Turno, error) {
 	// valido que exista el turno
-	_, err := s.DB.Query(fmt.Sprintf("SELECT * FROM turnos WHERE id = %d;", id))
+	_, err := s.DB.Query("SELECT * FROM turnos WHERE id = ?", id)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			fmt.Println("El turno no existe en la base de datos:", err)
@@ -120,19 +136,26 @@ func (s *SqlStore) Update(id int, turno modelo.Turno) (modelo.Turno, error) {
 
 	// armo la query
 	query := "UPDATE turnos SET"
-	switch {
-	case turno.Paciente.ID > 0:
-		query += fmt.Sprintf("paciente_id = %d, ", turno.Paciente.ID)
-	case turno.Odontologo.ID > 0:
-		query += fmt.Sprintf("odontologo_id = %d, ", turno.Odontologo.ID)
-	case turno.FechaYHora != "":
-		query += fmt.Sprintf("fecha_hora = %s, ", turno.FechaYHora)
-	case turno.Descripcion != "":
-		query += fmt.Sprintf("descripcion = %s, ", turno.Descripcion)
+
+	if turno.Paciente.ID > 0 {
+		query += " paciente_id = '" + string(turno.Paciente.ID) + "',"
+	}
+	if turno.Odontologo.ID > 0 {
+		query += " odontologo_id = '" + string(turno.Odontologo.ID) + "',"
+	}
+	if turno.FechaYHora != "" {
+		query += " fecha_hora = '" + turno.FechaYHora + "',"
+	}
+	if turno.Descripcion != "" {
+		query += " descripcion = '" + turno.Descripcion + "',"
 	}
 
+	query = query[0 : len(query)-1]
+	query += " WHERE id = ?"
+
+	fmt.Println(query)
 	// actualizo el turno
-	_, err = s.DB.Exec(query)
+	_, err = s.DB.Exec(query, id)
 
 	if err != nil {
 		fmt.Println("Error al ejecutar la consulta:", err)
@@ -144,7 +167,7 @@ func (s *SqlStore) Update(id int, turno modelo.Turno) (modelo.Turno, error) {
 	err = s.DB.QueryRow("SELECT t.id, p.id, p.nombre, p.apellido, p.domicilio, p.dni, p.fecha_de_alta, "+
 		"o.id, o.nombre, o.apellido, o.matricula, t.fecha_hora, t.descripcion "+
 		"FROM turnos t INNER JOIN pacientes p ON t.paciente_id = p.id "+
-		"INNER JOIN odontologos o ON t.odontologo_id = o.id WHERE id = ?", id).Scan(&updatedTurno.ID, &updatedTurno.Paciente.ID,
+		"INNER JOIN odontologos o ON t.odontologo_id = o.id WHERE t.id = ?", id).Scan(&updatedTurno.ID, &updatedTurno.Paciente.ID,
 		&updatedTurno.Paciente.Nombre, &updatedTurno.Paciente.Apellido, &updatedTurno.Paciente.Domicilio, &updatedTurno.Paciente.DNI,
 		&updatedTurno.Paciente.FechaDeAlta, &updatedTurno.Odontologo.ID, &updatedTurno.Odontologo.Nombre, &updatedTurno.Odontologo.Apellido,
 		&updatedTurno.Odontologo.Matricula, &updatedTurno.FechaYHora, &updatedTurno.Descripcion)
@@ -152,9 +175,9 @@ func (s *SqlStore) Update(id int, turno modelo.Turno) (modelo.Turno, error) {
 	return updatedTurno, nil
 }
 
-func (s *SqlStore) Delete(id int) (string, error) {
+func (s *TurnoStore) Delete(id int) (string, error) {
 	// valido que exista el turno
-	_, err := s.DB.Query(fmt.Sprintf("SELECT * FROM turnos WHERE id = %d;", id))
+	_, err := s.DB.Query("SELECT * FROM turnos WHERE id = ?", id)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			fmt.Println("El turno no existe en la base de datos:", err)
@@ -174,9 +197,9 @@ func (s *SqlStore) Delete(id int) (string, error) {
 	return "El turno se ha eliminado con exito", nil
 }
 
-func (s *SqlStore) GetByDNI(dni string, matricula string) ([]modelo.Turno, error) {
+func (s *TurnoStore) GetByDNI(dni string) ([]modelo.Turno, error) {
 	// valido que exista el paciente
-	_, err := s.DB.Query(fmt.Sprintf("SELECT * FROM pacientes WHERE dni = %s;", dni))
+	_, err := s.DB.Query("SELECT * FROM pacientes WHERE dni = ?", dni)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			fmt.Println("El paciente no existe en la base de datos:", err)
