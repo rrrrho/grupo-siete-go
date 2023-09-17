@@ -1,12 +1,12 @@
 package turno
 
 type Repository interface {
-	AddTurno(turno Turno) (Turno, error)
-	GetTurnoByID(id int) (Turno, error)
-	ReplaceTurno(turno Turno) (Turno, error)
-	UpdateTurno(turno Turno) (Turno, error)
-	DeleteTurno(id int) (string, error)
-	GetTurnosByDNI(dni string) ([]Turno, error)
+	Save(turno Turno) (Turno, error)
+	GetByID(id int) (Turno, error)
+	Replace(turno Turno) (Turno, error)
+	Update(id int, turno Turno) (Turno, error)
+	Delete(id int) (string, error)
+	GetByDNI(dni string) ([]Turno, error)
 }
 
 type Service struct {
@@ -17,26 +17,26 @@ func NewService(repository Repository) *Service {
 	return &Service{repository: repository}
 }
 
-func (s *Service) AddTurno(turno Turno) (Turno, error) {
-	return s.repository.AddTurno(turno)
+func (s *Service) Save(turno Turno) (Turno, error) {
+	return s.repository.Save(turno)
 }
 
-func (s *Service) GetTurnoByID(id int) (Turno, error) {
-	return s.repository.GetTurnoByID(id)
+func (s *Service) GetByID(id int) (Turno, error) {
+	return s.repository.GetByID(id)
 }
 
-func (s *Service) ReplaceTurno(turno Turno) (Turno, error) {
-	return s.repository.ReplaceTurno(turno)
+func (s *Service) Replace(turno Turno) (Turno, error) {
+	return s.repository.Replace(turno)
 }
 
-func (s *Service) UpdateTurno(turno Turno) (Turno, error) {
-	return s.repository.UpdateTurno(turno)
+func (s *Service) Update(id int, turno Turno) (Turno, error) {
+	return s.repository.Update(id, turno)
 }
 
-func (s *Service) DeleteTurno(id int) (string, error) {
-	return s.repository.DeleteTurno(id)
+func (s *Service) Delete(id int) (string, error) {
+	return s.repository.Delete(id)
 }
 
-func (s *Service) GetTurnosByDNI(dni string) ([]Turno, error) {
-	return s.repository.GetTurnosByDNI(dni)
+func (s *Service) GetByDNI(dni string, matricula string) ([]Turno, error) {
+	return s.repository.GetByDNI(dni)
 }
