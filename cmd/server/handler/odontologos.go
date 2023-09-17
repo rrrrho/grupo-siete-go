@@ -9,22 +9,21 @@ import (
 )
 
 type OdontologoGetter interface {
-	GetByID(id int) (odontologo.Odontologo)
+	GetByID(id int) odontologo.Odontologo
 }
 
 type OdontologoCreator interface {
-	ModifyById(id int, )
+	ModifyById(id int)
 }
 
-
 type OdontologosHandler struct {
-	odontologoGetter OdontologoGetter
+	odontologoGetter  OdontologoGetter
 	odontologoCreator OdontologoCreator
 }
 
 func NewOdontologoHandler(getter OdontologoGetter, creator OdontologoCreator) *OdontologosHandler {
 	return &OdontologosHandler{
-		odontologoGetter: getter,
+		odontologoGetter:  getter,
 		odontologoCreator: creator,
 	}
 }
@@ -39,6 +38,5 @@ func (odontologoHandler *OdontologosHandler) GetOdontologoByID(ctx *gin.Context)
 	odontologo, err := ph.productsGetter.GetByID(id)
 
 }
-
 
 // FALTA TERMINAR
