@@ -1,0 +1,107 @@
+{
+	"info": {
+		"_postman_id": "8f09e6da-bac9-40b1-a607-3e8eb08d61ca",
+		"name": "turnos",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "18572323"
+	},
+	"item": [
+		{
+			"name": "get by id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8080/turnos/1"
+			},
+			"response": []
+		},
+		{
+			"name": "get by dni",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/turnos?dni=45.890.236",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"turnos"
+					],
+					"query": [
+						{
+							"key": "dni",
+							"value": "45.890.236"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "save",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\r\n        \"paciente\": {\r\n            \"id\": 1\r\n        },\r\n        \"odontologo\": {\r\n            \"id\": 1\r\n        },\r\n        \"fecha_y_hora\": \"2023-12-02\",\r\n        \"descripcion\": \"Implemante\"\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/turnos"
+			},
+			"response": []
+		},
+		{
+			"name": "delete by id",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "http://localhost:8080/turnos/2"
+			},
+			"response": []
+		},
+		{
+			"name": "replace",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 3,\r\n    \"paciente\": {\r\n        \"id\": 1\r\n    },\r\n    \"odontologo\": {\r\n        \"id\": 2\r\n    },\r\n    \"fecha_y_hora\": \"2023-12-02 15:30\",\r\n    \"descripcion\": \"Implante de paletas\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/turnos"
+			},
+			"response": []
+		},
+		{
+			"name": "update",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"fecha_y_hora\": \"2023-10-23 14:15\",\r\n    \"descripcion\": \"Extraccion de muelas de premolares\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/turnos/1"
+			},
+			"response": []
+		}
+	]
+}
