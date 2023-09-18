@@ -33,37 +33,57 @@ func (r *Repository) GetByID(id int) (Paciente, error) {
 }
 
 func (r *Repository) Save(pacienteInput Paciente) (Paciente, error) {
-	query := fmt.Sprintf("INSERT INTO pacientes (nombre, apellido, domicilio, dni, fecha_de_alta) VALUES(%r, %r, %r, %r, %r)", pacienteInput.Nombre, pacienteInput.Apellido, pacienteInput.Domicilio, pacienteInput.DNI, pacienteInput.FechaDeAlta)
-	stmt, err := r.DB.Prepare(query)
-	if err != nil {
-		return Paciente{}, err
-	}
-	defer stmt.Close()
+	query := "INSERT INTO pacientes (nombre, apellido, domicilio, dni, fecha_de_alta) VALUES (?, ?, ?, ?, ?)"
+    stmt, err := r.DB.Prepare(query)
+    if err != nil {
+        return Paciente{}, err
+    }
+    defer stmt.Close()
+    fechaFormatted := pacienteInput.FechaDeAlta.Format("2006-01-02")
 
-	var result sql.Result
-	result, err = stmt.Exec()
-	_, err = stmt.Exec()
-	if err != nil {
-		return Paciente{}, err
-	}
+    result, err := stmt.Exec(
+        pacienteInput.Nombre,
+        pacienteInput.Apellido,
+        pacienteInput.Domicilio,
+        pacienteInput.DNI,
+        fechaFormatted,
+    )
+    if err != nil {
+        return Paciente{}, err
+    }
 
-	insertedId, _ := result.LastInsertId()
-	pacienteInput.ID = int(insertedId)
-	return pacienteInput, nil
+    insertedID, err := result.LastInsertId()
+    if err != nil {
+        return Paciente{}, err
+    }
+
+    pacienteInput.ID = int(insertedID)
+    return pacienteInput, nil
 }
 
 func (r *Repository) Modify(id int, pacienteInput Paciente) (Paciente, error) {
-	query := fmt.Sprintf("UPDATE pacientes SET nombre=%r, apellido=%r, domicilio=%r, dni=%r, fecha_de_alta=%r WHERE ID=%d", pacienteInput.Nombre, pacienteInput.Apellido, pacienteInput.Domicilio, pacienteInput.DNI, pacienteInput.FechaDeAlta, id)
-	stmt, err := r.DB.Prepare(query)
-	if err != nil {
-		return Paciente{}, err
-	}
-	_, err = stmt.Exec()
-	if err != nil {
-		return Paciente{}, err
-	}
-	defer stmt.Close()
-	return pacienteInput, nil
+	query := "UPDATE pacientes SET nombre=?, apellido=?, domicilio=?, dni=?, fecha_de_alta=? WHERE ID=?"
+    stmt, err := r.DB.Prepare(query)
+    if err != nil {
+        return Paciente{}, err
+    }
+    defer stmt.Close()
+
+    fechaFormatted := pacienteInput.FechaDeAlta.Format("2006-01-02")
+
+    _, err = stmt.Exec(
+        pacienteInput.Nombre,
+        pacienteInput.Apellido,
+        pacienteInput.Domicilio,
+        pacienteInput.DNI,
+        fechaFormatted,
+        id,
+    )
+    if err != nil {
+        return Paciente{}, err
+    }
+
+    return pacienteInput, nil
 }
 
 func (r *Repository) Delete(id int) error {
