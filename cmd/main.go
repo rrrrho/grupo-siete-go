@@ -9,10 +9,12 @@ import (
 	"grupo-siete-go/internal/odontologo"
 	"grupo-siete-go/internal/paciente"
 	"grupo-siete-go/internal/turno"
+	"net/http"
 	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+	"github.com/swaggo/swag/example/basic/docs"
 )
 
 // @title Clinica Odontologia Back End 3 - Grupo 7 - Certified Tech Developer - Digital House
@@ -54,7 +56,15 @@ func main() {
 		panic(err)
 	}
 
-	router := gin.Default()
+	router := gin.New()
+
+	//docs endpoint
+	docs.SwaggerInfo.Host = os.Getenv("HOST")
+	router.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
+	router.GET("/ping", func(context *gin.Context) {
+		context.JSON(http.StatusOK, gin.H{"ok": "ok"})
+	})
 
 	// TURNOS
 	turnoRepository := database.NewTurnoDatabase(mySqlDatabase)

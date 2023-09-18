@@ -4,6 +4,7 @@ import (
 	"grupo-siete-go/internal/odontologo"
 	"net/http"
 	"strconv"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -25,21 +26,29 @@ type OdontologoEliminator interface {
 }
 
 type OdontologosHandler struct {
-	odontologoGetter  OdontologoGetter
-	odontologoCreator OdontologoCreator
-	odontologoUpdater OdontologoUpdater
+	odontologoGetter     OdontologoGetter
+	odontologoCreator    OdontologoCreator
+	odontologoUpdater    OdontologoUpdater
 	odontologoEliminator OdontologoEliminator
 }
 
 func NewOdontologoHandler(getter OdontologoGetter, creator OdontologoCreator, updater OdontologoUpdater, eliminator OdontologoEliminator) *OdontologosHandler {
 	return &OdontologosHandler{
-		odontologoGetter:  getter,
-		odontologoCreator: creator,
-		odontologoUpdater: updater,
+		odontologoGetter:     getter,
+		odontologoCreator:    creator,
+		odontologoUpdater:    updater,
 		odontologoEliminator: eliminator,
 	}
 }
 
+// GetOdontologoByID godoc
+// @Summary      Gets a odontologo by id
+// @Description  Gets a odontologo by id from the repository
+// @Tags         odontologos
+// @Produce      json
+// @Param        id path string true "ID"
+// @Success      200 {object} odontolog.Odontologo
+// @Router       /odontologos/{id} [get]
 func (h *OdontologosHandler) GetByID(ctx *gin.Context) {
 	idParam := ctx.Param("id")
 	id, err := strconv.Atoi(idParam)
@@ -55,6 +64,14 @@ func (h *OdontologosHandler) GetByID(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, odontologo)
 }
 
+// Save Odontologo godoc
+// @Summary      Saves a odontologo
+// @Description  Saves a odontologo into the repository
+// @Tags         odontologos
+// @Produce      json
+// @Param        odontologo body request
+// @Success      200 {object} odontolog.Odontologo
+// @Router       /odontologos [post]
 func (h *OdontologosHandler) Save(ctx *gin.Context) {
 	// obtengo el odontologo del contexto
 	var odontologo odontologo.Odontologo
@@ -72,6 +89,14 @@ func (h *OdontologosHandler) Save(ctx *gin.Context) {
 	ctx.JSON(http.StatusCreated, savedOdontologo)
 }
 
+// Replace Odontologo godoc
+// @Summary      Replaces an odontologo
+// @Description  Replaces an existing odontologo from the repository
+// @Tags         odontologos
+// @Produce      json
+// @Param        odontologo body request
+// @Success      200 {object} odontolog.Odontologo
+// @Router       /odontologos [put]
 func (h *OdontologosHandler) Replace(ctx *gin.Context) {
 	// obtengo el odontologo
 	var odontologo odontologo.Odontologo
@@ -88,6 +113,14 @@ func (h *OdontologosHandler) Replace(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, updatedOdontologo)
 }
 
+// Update Odontologo godoc
+// @Summary      Udpates an odontologo
+// @Description  Updates an existing odontologo from the repository with one o more features
+// @Tags         odontologos
+// @Produce      json
+// @Param        id path string true "ID" - odontologo body request
+// @Success      200 {object} odontolog.Odontologo
+// @Router       /odontologos [patch]
 func (h *OdontologosHandler) Update(ctx *gin.Context) {
 	// obtengo el id
 	strID := ctx.Param("id")
@@ -111,6 +144,14 @@ func (h *OdontologosHandler) Update(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, updatedOdontologo)
 }
 
+// Delete Odontologo godoc
+// @Summary      Deletes an odontologo
+// @Description  Deletes an existing odontologo from the repository
+// @Tags         odontologos
+// @Produce      string
+// @Param        id path string true "ID"
+// @Success      200 {object} web.response
+// @Router       /odontologos [delete]
 func (h *OdontologosHandler) Delete(ctx *gin.Context) {
 	// obtengo el id
 	strID := ctx.Param("id")
