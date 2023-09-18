@@ -10,7 +10,7 @@
 			"name": "Turnos",
 			"item": [
 				{
-					"name": "get by id Copy",
+					"name": "get by id",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -30,7 +30,7 @@
 					"response": []
 				},
 				{
-					"name": "get by dni Copy",
+					"name": "get by dni",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -55,7 +55,7 @@
 					"response": []
 				},
 				{
-					"name": "save Copy",
+					"name": "save",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -94,7 +94,7 @@
 					"response": []
 				},
 				{
-					"name": "delete by id Copy",
+					"name": "delete by id",
 					"request": {
 						"method": "DELETE",
 						"header": [
@@ -125,7 +125,7 @@
 					"response": []
 				},
 				{
-					"name": "replace Copy",
+					"name": "replace",
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -164,7 +164,7 @@
 					"response": []
 				},
 				{
-					"name": "update Copy",
+					"name": "update",
 					"request": {
 						"method": "PATCH",
 						"header": [
@@ -388,7 +388,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/pacientes/2",
+							"raw": "http://localhost:8080/pacientes/5",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -396,7 +396,7 @@
 							"port": "8080",
 							"path": [
 								"pacientes",
-								"2"
+								"5"
 							]
 						}
 					},
@@ -406,10 +406,21 @@
 					"name": "save",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "PUBLIC-KEY",
+								"value": "localKey",
+								"type": "text"
+							},
+							{
+								"key": "PRIVATE-KEY",
+								"value": "grupoSiete",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nombre\": \"Tres nombre\",\r\n    \"apellido\": \"Tres apellido\",\r\n    \"domicilio\": \"Maipu 6785\",\r\n    \"dni\": \"45.890.236\",\r\n    \"fecha_de_alta\": \"2020-01-01\"\r\n}",
+							"raw": "{\r\n    \"nombre\": \"loco\",\r\n    \"apellido\": \"Tres apellido\",\r\n    \"domicilio\": \"Maipu 6785\",\r\n    \"dni\": \"45.890.236\",\r\n    \"fecha_de_alta\": \"2020-01-01\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -434,9 +445,20 @@
 					"name": "delete by id",
 					"request": {
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "PUBLIC-KEY",
+								"value": "localKey",
+								"type": "text"
+							},
+							{
+								"key": "PRIVATE-KEY",
+								"value": "grupoSiete",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "http://localhost:8080/pacientes/2",
+							"raw": "http://localhost:8080/pacientes/6",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -444,7 +466,7 @@
 							"port": "8080",
 							"path": [
 								"pacientes",
-								"2"
+								"6"
 							]
 						}
 					},
@@ -454,10 +476,21 @@
 					"name": "replace",
 					"request": {
 						"method": "PUT",
-						"header": [],
+						"header": [
+							{
+								"key": "PUBLIC-KEY",
+								"value": "localKey",
+								"type": "text"
+							},
+							{
+								"key": "PRIVATE-KEY",
+								"value": "grupoSiete",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": 4,\r\n    \"nombre\": \"Alberto_2\",\r\n    \"apellido\": \"Mongo_2\",\r\n    \"matricula\": \"D385934\"\r\n}",
+							"raw": "{\r\n    \"id\": 2,\r\n    \"nombre\": \"Manuel\",\r\n    \"apellido\": \"Ramirez\",\r\n    \"domicilio\": \"Ind. 2344\",\r\n    \"dni\": \"39.836.654\",\r\n    \"fecha_de_alta\": \"2021-07-12\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -482,10 +515,21 @@
 					"name": "update",
 					"request": {
 						"method": "PATCH",
-						"header": [],
+						"header": [
+							{
+								"key": "PUBLIC-KEY",
+								"value": "localKey",
+								"type": "text"
+							},
+							{
+								"key": "PRIVATE-KEY",
+								"value": "grupoSiete",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nombre\": \"Alberto_6\",\r\n    \"apellido\": \"Mongo_6\"\r\n}",
+							"raw": "{\r\n    \"id\": 5,\r\n    \"nombre\": \"Carlos\",\r\n    \"apellido\": \"Tres apellido\",\r\n    \"domicilio\": \"Maipu 6785\",\r\n    \"dni\": \"45.890.236\",\r\n    \"fecha_de_alta\": \"2020-01-01\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -493,7 +537,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/pacientes/4",
+							"raw": "http://localhost:8080/pacientes/5",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -501,7 +545,7 @@
 							"port": "8080",
 							"path": [
 								"pacientes",
-								"4"
+								"5"
 							]
 						}
 					},
