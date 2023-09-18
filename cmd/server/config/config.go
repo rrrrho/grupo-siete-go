@@ -11,6 +11,7 @@ type Config struct {
 }
 
 type PublicConfig struct {
+	PlubicKey     string
 	MySQLUser     string
 	MySQLHost     string
 	MySQLPort     string
@@ -19,30 +20,33 @@ type PublicConfig struct {
 
 type PrivateConfig struct {
 	MySQLPassword string
-	// SecretKey string
+	SecretKey     string
 }
 
 var (
 	ErrEnvNotExits       = errors.New("env not exits")
 	ErrMysqlPassNotExits = errors.New("mysql password does not exits in env")
-	// ErrSecretKeyNotExits = errors.New("secret key does not exits in env")
+	ErrSecretKeyNotExits = errors.New("secret key does not exits in env")
 )
 
 var (
 	envs = map[string]PublicConfig{
 		"local": {
+			PlubicKey:     "localKey",
 			MySQLUser:     "local-clinica-user",
 			MySQLHost:     "localhost",
 			MySQLPort:     "3306",
 			MySQLDatabase: "local-clinica-database",
 		},
 		"dev": {
+			PlubicKey:     "devKey",
 			MySQLUser:     "dev-clinica-user",
 			MySQLHost:     "localhost",
 			MySQLPort:     "3307",
 			MySQLDatabase: "dev-clinica-database",
 		},
 		"prod": {
+			PlubicKey:     "prodKey",
 			MySQLUser:     "prod-clinica-user",
 			MySQLHost:     "localhost",
 			MySQLPort:     "3308",
@@ -58,12 +62,11 @@ func NewConfig(env string) (Config, error) {
 		return Config{}, ErrEnvNotExits
 	}
 
-	// secretKey := os.Getenv("SECRET_KEY")
-	/*
-		if secretKey == "" {
-			return Config{}, ErrSecretKeyNotExits
-		}
-	*/
+	secretKey := os.Getenv("SECRET_KEY")
+	if secretKey == "" {
+		return Config{}, ErrSecretKeyNotExits
+	}
+
 	mysqlPassword := os.Getenv("MYSQL_PASSWORD")
 	if mysqlPassword == "" {
 		return Config{}, ErrMysqlPassNotExits
@@ -72,7 +75,7 @@ func NewConfig(env string) (Config, error) {
 	return Config{
 		PublicConfig: publicConfig,
 		PrivateConfig: PrivateConfig{
-			// SecretKey: secretKey
+			SecretKey:     secretKey,
 			MySQLPassword: mysqlPassword,
 		},
 	}, nil

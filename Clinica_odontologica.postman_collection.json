@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "57f488c3-3e2f-4d68-9365-2f3082db0f30",
+		"_postman_id": "7d713b16-6bcd-40e7-930c-f0db9dd8aab5",
 		"name": "Clinica_odontologica",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "29418976"
+		"_exporter_id": "18589816"
 	},
 	"item": [
 		{
@@ -58,10 +58,21 @@
 					"name": "save Copy",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "PUBLIC-KEY",
+								"value": "localKey",
+								"type": "text"
+							},
+							{
+								"key": "PRIVATE-KEY",
+								"value": "grupoSiete",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "    {\r\n        \"paciente\": {\r\n            \"id\": 1\r\n        },\r\n        \"odontologo\": {\r\n            \"id\": 1\r\n        },\r\n        \"fecha_y_hora\": \"2023-12-02\",\r\n        \"descripcion\": \"Implemante\"\r\n    }",
+							"raw": "    {\r\n        \"paciente\": {\r\n            \"id\": 1\r\n        },\r\n        \"odontologo\": {\r\n            \"id\": 1\r\n        },\r\n        \"fecha_y_hora\": \"2023-12-05\",\r\n        \"descripcion\": \"dientes\"\r\n    }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -86,7 +97,18 @@
 					"name": "delete by id Copy",
 					"request": {
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "PUBLIC-KEY",
+								"value": "localKey",
+								"type": "text"
+							},
+							{
+								"key": "PRIVATE-KEY",
+								"value": "grupoSiete",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "http://localhost:8080/turnos/2",
 							"protocol": "http",
@@ -106,7 +128,18 @@
 					"name": "replace Copy",
 					"request": {
 						"method": "PUT",
-						"header": [],
+						"header": [
+							{
+								"key": "PUBLIC-KEY",
+								"value": "localKey",
+								"type": "text"
+							},
+							{
+								"key": "PRIVATE-KEY",
+								"value": "grupoSiete",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n    \"id\": 3,\r\n    \"paciente\": {\r\n        \"id\": 1\r\n    },\r\n    \"odontologo\": {\r\n        \"id\": 2\r\n    },\r\n    \"fecha_y_hora\": \"2023-12-02 15:30\",\r\n    \"descripcion\": \"Implante de paletas\"\r\n}",
@@ -134,7 +167,18 @@
 					"name": "update Copy",
 					"request": {
 						"method": "PATCH",
-						"header": [],
+						"header": [
+							{
+								"key": "PUBLIC-KEY",
+								"value": "localKey",
+								"type": "text"
+							},
+							{
+								"key": "PRIVATE-KEY",
+								"value": "grupoSiete",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n    \"fecha_y_hora\": \"2023-10-23 14:15\",\r\n    \"descripcion\": \"Extraccion de muelas de premolares\"\r\n}",
@@ -170,7 +214,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/odontologos/4",
+							"raw": "http://localhost:8080/odontologos/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -178,7 +222,7 @@
 							"port": "8080",
 							"path": [
 								"odontologos",
-								"4"
+								"1"
 							]
 						}
 					},
@@ -188,7 +232,18 @@
 					"name": "save",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "PUBLIC-KEY",
+								"value": "localKey",
+								"type": "text"
+							},
+							{
+								"key": "PRIVATE-KEY",
+								"value": "grupoSiete",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n    \"nombre\": \"Alberto\",\r\n    \"apellido\": \"Mongo\",\r\n    \"matricula\": \"C385934\"\r\n}",
@@ -216,7 +271,18 @@
 					"name": "delete by id",
 					"request": {
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "PUBLIC-KEY",
+								"value": "localKey",
+								"type": "text"
+							},
+							{
+								"key": "PRIVATE-KEY",
+								"value": "grupoSiete",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "http://localhost:8080/odontologos/3",
 							"protocol": "http",
@@ -236,7 +302,18 @@
 					"name": "replace",
 					"request": {
 						"method": "PUT",
-						"header": [],
+						"header": [
+							{
+								"key": "PUBLIC-KEY",
+								"value": "localKey",
+								"type": "text"
+							},
+							{
+								"key": "PRIVATE-KEY",
+								"value": "grupoSiete",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n    \"id\": 4,\r\n    \"nombre\": \"Alberto_3\",\r\n    \"apellido\": \"Mongo_3\",\r\n    \"matricula\": \"D385934\"\r\n}",
@@ -264,7 +341,18 @@
 					"name": "update",
 					"request": {
 						"method": "PATCH",
-						"header": [],
+						"header": [
+							{
+								"key": "PUBLIC-KEY",
+								"value": "localKey",
+								"type": "text"
+							},
+							{
+								"key": "PRIVATE-KEY",
+								"value": "grupoSiete",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n    \"nombre\": \"Alberto_6\",\r\n    \"apellido\": \"Mongo_6\"\r\n}",
