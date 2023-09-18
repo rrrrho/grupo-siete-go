@@ -6,6 +6,7 @@ import (
 	"grupo-siete-go/cmd/server/external/database"
 	"grupo-siete-go/cmd/server/handler"
 	"grupo-siete-go/internal/odontologo"
+	"grupo-siete-go/internal/paciente"
 	"grupo-siete-go/internal/turno"
 	"os"
 
@@ -37,6 +38,7 @@ func main() {
 
 	router := gin.Default()
 
+	// TURNOS
 	turnoRepository := database.NewTurnoDatabase(mySqlDatabase)
 	turnoService := turno.NewService(turnoRepository)
 	turnoHandler := handler.NewTurnoHandler(turnoService, turnoService, turnoService, turnoService)
@@ -49,6 +51,7 @@ func main() {
 	turnoGroup.PATCH("/:id", turnoHandler.Update)
 	turnoGroup.DELETE("/:id", turnoHandler.Delete)
 
+	// ODONTOLOGOS
 	odontologoRepository := database.NewOdontologoDatabase(mySqlDatabase)
 	odontologoService := odontologo.NewService(odontologoRepository)
 	odontologoHandler := handler.NewOdontologoHandler(odontologoService, odontologoService, odontologoService, odontologoService)
@@ -59,6 +62,19 @@ func main() {
 	odontologoGroup.PUT("", odontologoHandler.Replace)
 	odontologoGroup.PATCH("/:id", odontologoHandler.Update)
 	odontologoGroup.DELETE("/:id", odontologoHandler.Delete)
+
+	// PACIENTES
+	pacienteRepository := paciente.NewPacienteDatabase(mySqlDatabase)
+	pacienteService := paciente.NewService(pacienteRepository)
+	pacienteHandler := handler.NewPacienteHandler(*pacienteService)
+
+	pacienteGroup := router.Group("/pacientes")
+	pacienteGroup.GET("/:id", pacienteHandler.GetByID)
+	pacienteGroup.POST("", pacienteHandler.Save)
+	pacienteGroup.PUT("", pacienteHandler.Update)
+	pacienteGroup.DELETE("/:id", pacienteHandler.Delete)
+
+
 
 	err = router.Run()
 

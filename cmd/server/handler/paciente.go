@@ -11,7 +11,7 @@ type PacienteHandler struct {
 	service paciente.Service
 }
 
-func NewHandler(service paciente.Service) *PacienteHandler {
+func NewPacienteHandler(service paciente.Service) *PacienteHandler {
 	return &PacienteHandler{service: service}
 }
 
