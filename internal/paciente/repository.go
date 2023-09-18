@@ -39,14 +39,13 @@ func (r *Repository) Save(pacienteInput Paciente) (Paciente, error) {
         return Paciente{}, err
     }
     defer stmt.Close()
-    fechaFormatted := pacienteInput.FechaDeAlta.Format("2006-01-02")
 
     result, err := stmt.Exec(
         pacienteInput.Nombre,
         pacienteInput.Apellido,
         pacienteInput.Domicilio,
         pacienteInput.DNI,
-        fechaFormatted,
+        pacienteInput.FechaDeAlta,
     )
     if err != nil {
         return Paciente{}, err
@@ -69,14 +68,12 @@ func (r *Repository) Modify(id int, pacienteInput Paciente) (Paciente, error) {
     }
     defer stmt.Close()
 
-    fechaFormatted := pacienteInput.FechaDeAlta.Format("2006-01-02")
-
     _, err = stmt.Exec(
         pacienteInput.Nombre,
         pacienteInput.Apellido,
         pacienteInput.Domicilio,
         pacienteInput.DNI,
-        fechaFormatted,
+        pacienteInput.FechaDeAlta,
         id,
     )
     if err != nil {
