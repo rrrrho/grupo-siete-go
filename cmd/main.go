@@ -14,6 +14,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	"github.com/swaggo/swag/example/basic/docs"
 )
 
@@ -99,7 +101,7 @@ func main() {
 	pacienteGroup := router.Group("/pacientes")
 	pacienteGroup.GET("/:id", pacienteHandler.GetByID)
 	pacienteGroup.POST("", pacienteHandler.Save)
-	pacienteGroup.PUT("", pacienteHandler.Update)
+	pacienteGroup.PATCH("/:id", pacienteHandler.Update)
 	pacienteGroup.DELETE("/:id", pacienteHandler.Delete)
 
 	err = router.Run()

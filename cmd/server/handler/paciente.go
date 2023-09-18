@@ -62,15 +62,6 @@ func (h *PacienteHandler) Save(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, paciente)
 }
 
-// Replace Paciente godoc
-// @Summary      Replaces an paciente
-// @Description  Replaces an existing paciente from the repository
-// @Tags         paciente
-// @Produce      json
-// @Param        paciente body request
-// @Success      200 {object} paciente.Paciente
-// @Router       /pacientes [put]
-
 // Update Paciente godoc
 // @Summary      Udpates an paciente
 // @Description  Updates an existing paciente from the repository with one o more features
