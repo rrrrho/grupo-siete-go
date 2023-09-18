@@ -80,9 +80,9 @@ func main() {
 
 	pacienteGroup := router.Group("/pacientes")
 	pacienteGroup.GET("/:id", pacienteHandler.GetByID)
-	pacienteGroup.POST("", pacienteHandler.Save)
-	pacienteGroup.PUT("", pacienteHandler.Update)
-	pacienteGroup.DELETE("/:id", pacienteHandler.Delete)
+	pacienteGroup.POST("", authMidd.AuthHeader, pacienteHandler.Save)
+	pacienteGroup.PATCH("/:id", authMidd.AuthHeader, pacienteHandler.Update)
+	pacienteGroup.DELETE("/:id", authMidd.AuthHeader, pacienteHandler.Delete)
 
 	err = router.Run()
 
