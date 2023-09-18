@@ -4,13 +4,14 @@ import (
 	"database/sql"
 	"fmt"
 	"grupo-siete-go/internal/odontologo"
+	"errors"
 )
 
 type OdontologoStore struct {
 	*sql.DB
 }
 
-func NewDatabase(db *sql.DB) *OdontologoStore {
+func NewOdontologoDatabase(db *sql.DB) *OdontologoStore {
 	return &OdontologoStore{db}
 }
 
@@ -26,36 +27,73 @@ func (s *OdontologoStore) GetByID(id int) (odontologo.Odontologo, error) {
 	return foundOdontologo, nil
 }
 
-func (s *OdontologoStore) Modify(id int, odontologoInput odontologo.Odontologo) (odontologo.Odontologo, error) {
-	query := fmt.Sprintf("UPDATE odontologos SET nombre=%s, apellido=%s, matricula=%s WHERE ID=%d", odontologoInput.Nombre, odontologoInput.Apellido, odontologoInput.Matricula, odontologoInput.ID)
-	stmt, err := s.DB.Prepare(query)
+
+func (s *OdontologoStore) Update(id int, odontologoInput odontologo.Odontologo) (odontologo.Odontologo, error) {
+	// valido que exista el Odontologo
+	_, err := s.DB.Query("SELECT * FROM odontologos WHERE id = ?", id)
 	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			fmt.Println("El Odontologo no existe en la base de datos:", err)
+		} else {
+			fmt.Println("Error al ejecutar la consulta:", err)
+		}
 		return odontologo.Odontologo{}, err
 	}
-	_, err = stmt.Exec()
+
+	// armo la query
+	query := "UPDATE odontologos SET"
+
+	if odontologoInput.ID > 0 {
+		query += " id = '" + string(odontologoInput.ID) + "',"
+	}
+	if odontologoInput.Nombre != "" {
+		query += " nombre = '" + odontologoInput.Nombre + "',"
+	}
+	if odontologoInput.Apellido != "" {
+		query += " apellido = '" + odontologoInput.Apellido + "',"
+	}
+	if odontologoInput.Matricula != "" {
+		query += " matricula = '" + odontologoInput.Matricula + "',"
+	}
+
+	query = query[0 : len(query)-1]
+	query += " WHERE id = ?"
+
+	fmt.Println(query)
+	// actualizo el odontologo
+	_, err = s.DB.Exec(query, id)
+
 	if err != nil {
+		fmt.Println("Error al ejecutar la consulta:", err)
 		return odontologo.Odontologo{}, err
 	}
-	defer stmt.Close()
-	return odontologoInput, nil
+
+	// obtengo el recurso actualizado
+	updatedOdontologo, err := s.GetByID(id)
+	return updatedOdontologo, nil
+}
+
+func (s *OdontologoStore) Replace(odontologoInput odontologo.Odontologo) (odontologo.Odontologo, error) {
+	_, err := s.DB.Exec("UPDATE odontologos SET nombre=?, apellido=?, matricula=? WHERE ID=?;", odontologoInput.Nombre, odontologoInput.Apellido, odontologoInput.Matricula, odontologoInput.ID)
+	if err != nil {
+		fmt.Println("Error al ejecutar la consulta:", err)
+		return odontologo.Odontologo{}, err
+	}
+	updatedOdontologo, err := s.GetByID(odontologoInput.ID)
+	if err != nil {
+		fmt.Println("Error al ejecutar la consulta:", err)
+		return odontologo.Odontologo{}, err
+	}
+	return updatedOdontologo, nil
 }
 
 func (s *OdontologoStore) Save(odontologoInput odontologo.Odontologo) (odontologo.Odontologo, error) {
-	query := fmt.Sprintf("INSERT INTO odontologos (nombre, apellido, matricula) VALUES(%s, %s, %s)", odontologoInput.Nombre, odontologoInput.Apellido, odontologoInput.Matricula)
-	stmt, err := s.DB.Prepare(query)
+	res, err := s.DB.Exec("INSERT INTO odontologos (nombre, apellido, matricula) VALUES(?,?,?);", odontologoInput.Nombre, odontologoInput.Apellido, odontologoInput.Matricula)
 	if err != nil {
-		return odontologo.Odontologo{}, err
+	fmt.Println("Error al ejecutar la consulta:", err)
+	return odontologo.Odontologo{}, err
 	}
-	defer stmt.Close()
-
-	var result sql.Result
-	result, err = stmt.Exec()
-	_, err = stmt.Exec()
-	if err != nil {
-		return odontologo.Odontologo{}, err
-	}
-
-	insertedId, _ := result.LastInsertId()
+	insertedId, _ := res.LastInsertId()
 	odontologoInput.ID = int(insertedId)
 	return odontologoInput, nil
 }

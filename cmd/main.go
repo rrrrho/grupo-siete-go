@@ -2,13 +2,15 @@ package main
 
 import (
 	"errors"
-	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 	"grupo-siete-go/cmd/server/config"
 	"grupo-siete-go/cmd/server/external/database"
 	"grupo-siete-go/cmd/server/handler"
+	"grupo-siete-go/internal/odontologo"
 	"grupo-siete-go/internal/turno"
 	"os"
+
+	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
 
 func main() {
@@ -46,6 +48,17 @@ func main() {
 	turnoGroup.PUT("", turnoHandler.Replace)
 	turnoGroup.PATCH("/:id", turnoHandler.Update)
 	turnoGroup.DELETE("/:id", turnoHandler.Delete)
+
+	odontologoRepository := database.NewOdontologoDatabase(mySqlDatabase)
+	odontologoService := odontologo.NewService(odontologoRepository)
+	odontologoHandler := handler.NewOdontologoHandler(odontologoService, odontologoService, odontologoService, odontologoService)
+
+	odontologoGroup := router.Group("/odontologos")
+	odontologoGroup.GET("/:id", odontologoHandler.GetByID)
+	odontologoGroup.POST("", odontologoHandler.Save)
+	odontologoGroup.PUT("", odontologoHandler.Replace)
+	odontologoGroup.PATCH("/:id", odontologoHandler.Update)
+	odontologoGroup.DELETE("/:id", odontologoHandler.Delete)
 
 	err = router.Run()
 
