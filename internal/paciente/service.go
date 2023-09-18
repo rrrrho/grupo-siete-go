@@ -41,7 +41,10 @@ func (s *Service) Save(pacienteInput Paciente) (Paciente, error) {
 }
 
 func (s *Service) Update(id int, pacienteInput Paciente) (Paciente, error) {
-	pacienteToUpdate := Paciente{}
+	pacienteToUpdate,err := s.GetByID(id)
+	if err != nil {
+		return Paciente{}, ErrPacienteNotFound
+	}
 	if pacienteInput.Nombre != "" {
 		pacienteToUpdate.Nombre = pacienteInput.Nombre
 	}
@@ -61,6 +64,7 @@ func (s *Service) Update(id int, pacienteInput Paciente) (Paciente, error) {
 	if err != nil {
 		return Paciente{}, ErrUpdatePaciente
 	}
+	paciente.ID = id
 	return paciente, nil
 }
 func (s *Service) Delete(id int) error {
