@@ -15,6 +15,14 @@ import (
 	"github.com/joho/godotenv"
 )
 
+// @title Clinica Odontologia Back End 3 - Grupo 7 - Certified Tech Developer - Digital House
+// @version 1.0
+// @description This API Handle Pacients, Dentist and Appointments.
+// @termsOfService https://developers.ctd.com.ar/es_ar/terminos-y-condiciones
+// @contact.name Rocio Belen Ghillino, Tomás Montivero, Agustin Damelio and Nicolás Gambino
+// @contact.url https://github.com/rrrrho/grupo-siete-go
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
 func main() {
 	godotenv.Load()
 	env := os.Getenv("env")
