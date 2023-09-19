@@ -156,10 +156,10 @@ func (th *TurnoHandler) Update(ctx *gin.Context) {
 // @Summary      Deletes a turno
 // @Description  Deletes an existing turno from the repository
 // @Tags         turno
-// @Produce      string
+// @Produce      json
 // @Param        id path int true "Turno's ID in order to delete from it"
-// @Success      200 {body} string
-// @Router       /turnos [delete]
+// @Success      204 "Turnos eliminado exitosamente"
+// @Router       /turnos/{id} [delete]
 func (th *TurnoHandler) Delete(ctx *gin.Context) {
 	// obtengo el id
 	strID := ctx.Param("id")

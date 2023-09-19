@@ -95,10 +95,10 @@ func (h *PacienteHandler) Update(ctx *gin.Context) {
 // @Summary      Deletes a paciente
 // @Description  Deletes an existing paciente from the repository
 // @Tags         paciente
-// @Produce      string
+// @Produce      json
 // @Param        id path int true "Paciente's ID in order to delete from it"
-// @Success      200 {body} string
-// @Router       /pacientes [delete]
+// @Success      204 "Paciente eliminado exitosamente"
+// @Router       /pacientes/{id} [delete]
 func (h *PacienteHandler) Delete(ctx *gin.Context) {
 	id := ctx.Param("id")
 	ID, err := strconv.Atoi(id)

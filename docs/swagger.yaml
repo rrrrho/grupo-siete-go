@@ -52,24 +52,6 @@ info:
   version: "1.0"
 paths:
   /odontologos:
-    delete:
-      description: Deletes an existing odontologo from the repository
-      parameters:
-      - description: Odontologo's ID in order to delete from it
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: body
-      summary: Deletes an odontologo
-      tags:
-      - odontologos
     patch:
       description: Updates an existing odontologo from the repository with one o more
         features
@@ -128,6 +110,22 @@ paths:
       tags:
       - odontologos
   /odontologos/{id}:
+    delete:
+      description: Deletes an existing odontologo from the repository
+      parameters:
+      - description: Odontologo's ID in order to delete from it
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Odontologo eliminado exitosamente
+      summary: Deletes an odontologo
+      tags:
+      - odontologos
     get:
       description: Gets a odontologo by id from the repository
       parameters:
@@ -147,24 +145,6 @@ paths:
       tags:
       - odontologos
   /pacientes:
-    delete:
-      description: Deletes an existing paciente from the repository
-      parameters:
-      - description: Paciente's ID in order to delete from it
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: body
-      summary: Deletes a paciente
-      tags:
-      - paciente
     patch:
       description: Updates an existing paciente from the repository with one o more
         features
@@ -204,6 +184,22 @@ paths:
       tags:
       - paciente
   /pacientes/{id}:
+    delete:
+      description: Deletes an existing paciente from the repository
+      parameters:
+      - description: Paciente's ID in order to delete from it
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Paciente eliminado exitosamente
+      summary: Deletes a paciente
+      tags:
+      - paciente
     get:
       description: Gets a paciente by id from the repository
       parameters:
@@ -223,24 +219,6 @@ paths:
       tags:
       - paciente
   /turnos:
-    delete:
-      description: Deletes an existing turno from the repository
-      parameters:
-      - description: Turno's ID in order to delete from it
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: body
-      summary: Deletes a turno
-      tags:
-      - turno
     get:
       description: Gets a turno by paciente dni from the repository
       parameters:
@@ -316,6 +294,22 @@ paths:
       tags:
       - turno
   /turnos/{id}:
+    delete:
+      description: Deletes an existing turno from the repository
+      parameters:
+      - description: Turno's ID in order to delete from it
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Turnos eliminado exitosamente
+      summary: Deletes a turno
+      tags:
+      - turno
     get:
       description: Gets a turno by id from the repository
       parameters:

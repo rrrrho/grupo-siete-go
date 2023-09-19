@@ -82,33 +82,6 @@ const docTemplate = `{
                     }
                 }
             },
-            "delete": {
-                "description": "Deletes an existing odontologo from the repository",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "odontologos"
-                ],
-                "summary": "Deletes an odontologo",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Odontologo's ID in order to delete from it",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "body"
-                        }
-                    }
-                }
-            },
             "patch": {
                 "description": "Updates an existing odontologo from the repository with one o more features",
                 "produces": [
@@ -164,6 +137,30 @@ const docTemplate = `{
                         }
                     }
                 }
+            },
+            "delete": {
+                "description": "Deletes an existing odontologo from the repository",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "odontologos"
+                ],
+                "summary": "Deletes an odontologo",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Odontologo's ID in order to delete from it",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Odontologo eliminado exitosamente"
+                    }
+                }
             }
         },
         "/pacientes": {
@@ -192,33 +189,6 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/paciente.Paciente"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "description": "Deletes an existing paciente from the repository",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "paciente"
-                ],
-                "summary": "Deletes a paciente",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Paciente's ID in order to delete from it",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "body"
                         }
                     }
                 }
@@ -276,6 +246,30 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/paciente.Paciente"
                         }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Deletes an existing paciente from the repository",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "paciente"
+                ],
+                "summary": "Deletes a paciente",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Paciente's ID in order to delete from it",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Paciente eliminado exitosamente"
                     }
                 }
             }
@@ -366,33 +360,6 @@ const docTemplate = `{
                     }
                 }
             },
-            "delete": {
-                "description": "Deletes an existing turno from the repository",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "turno"
-                ],
-                "summary": "Deletes a turno",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Turno's ID in order to delete from it",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "body"
-                        }
-                    }
-                }
-            },
             "patch": {
                 "description": "Updates an existing turno from the repository with one o more features",
                 "produces": [
@@ -446,6 +413,30 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/turno.Turno"
                         }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Deletes an existing turno from the repository",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "turno"
+                ],
+                "summary": "Deletes a turno",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Turno's ID in order to delete from it",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Turnos eliminado exitosamente"
                     }
                 }
             }

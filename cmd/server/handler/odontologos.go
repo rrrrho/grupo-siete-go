@@ -148,10 +148,10 @@ func (h *OdontologosHandler) Update(ctx *gin.Context) {
 // @Summary      Deletes an odontologo
 // @Description  Deletes an existing odontologo from the repository
 // @Tags         odontologos
-// @Produce      string
+// @Produce      json
 // @Param        id path int true "Odontologo's ID in order to delete from it"
-// @Success      200 {body} string
-// @Router       /odontologos [delete]
+// @Success      204 "Odontologo eliminado exitosamente"
+// @Router       /odontologos/{id} [delete]
 func (h *OdontologosHandler) Delete(ctx *gin.Context) {
 	// obtengo el id
 	strID := ctx.Param("id")
