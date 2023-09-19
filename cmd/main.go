@@ -17,7 +17,6 @@ import (
 	"github.com/joho/godotenv"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
-	// "github.com/swaggo/swag/example/basic/docs"
 )
 
 // @title Clinica Odontologia Back End 3 - Grupo 7 - Certified Tech Developer - Digital House
