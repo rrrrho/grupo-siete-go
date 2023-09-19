@@ -9,12 +9,24 @@ import (
 	"grupo-siete-go/internal/odontologo"
 	"grupo-siete-go/internal/paciente"
 	"grupo-siete-go/internal/turno"
+	"net/http"
 	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
+	"github.com/swaggo/swag/example/basic/docs"
 )
 
+// @title Clinica Odontologia Back End 3 - Grupo 7 - Certified Tech Developer - Digital House
+// @version 1.0
+// @description This API Handle Pacients, Dentist and Appointments.
+// @termsOfService https://developers.ctd.com.ar/es_ar/terminos-y-condiciones
+// @contact.name Rocio Belen Ghillino, Tomás Montivero, Agustin Damelio and Nicolás Gambino
+// @contact.url https://github.com/rrrrho/grupo-siete-go
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
 func main() {
 	godotenv.Load()
 	env := os.Getenv("env")
@@ -46,7 +58,15 @@ func main() {
 		panic(err)
 	}
 
-	router := gin.Default()
+	router := gin.New()
+
+	//docs endpoint
+	docs.SwaggerInfo.Host = os.Getenv("HOST")
+	router.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
+	router.GET("/ping", func(context *gin.Context) {
+		context.JSON(http.StatusOK, gin.H{"ok": "ok"})
+	})
 
 	// TURNOS
 	turnoRepository := database.NewTurnoDatabase(mySqlDatabase)
@@ -80,9 +100,9 @@ func main() {
 
 	pacienteGroup := router.Group("/pacientes")
 	pacienteGroup.GET("/:id", pacienteHandler.GetByID)
-	pacienteGroup.POST("", authMidd.AuthHeader, pacienteHandler.Save)
-	pacienteGroup.PATCH("/:id", authMidd.AuthHeader, pacienteHandler.Update)
-	pacienteGroup.DELETE("/:id", authMidd.AuthHeader, pacienteHandler.Delete)
+	pacienteGroup.POST("", pacienteHandler.Save)
+	pacienteGroup.PATCH("/:id", pacienteHandler.Update)
+	pacienteGroup.DELETE("/:id", pacienteHandler.Delete)
 
 	err = router.Run()
 

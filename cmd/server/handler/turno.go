@@ -1,10 +1,11 @@
 package handler
 
 import (
-	"github.com/gin-gonic/gin"
 	modelo "grupo-siete-go/internal/turno"
 	"net/http"
 	"strconv"
+
+	"github.com/gin-gonic/gin"
 )
 
 type TurnoCreator interface {
@@ -36,6 +37,14 @@ func NewTurnoHandler(creator TurnoCreator, getter TurnoGetter, updater TurnoUpda
 	return &TurnoHandler{turnoCreator: creator, turnoGetter: getter, TurnoUpdater: updater, TurnoEliminator: eliminator}
 }
 
+// Save Turno godoc
+// @Summary      Saves a turno
+// @Description  Saves a turno into the repository
+// @Tags         turno
+// @Produce      json
+// @Param        turno body turno.Turno true "Saves a turno"
+// @Success      200 {object} turno.Turno
+// @Router       /turnos [post]
 func (th *TurnoHandler) Save(ctx *gin.Context) {
 	// obtengo el turno del contexto
 	var turno modelo.Turno
@@ -55,6 +64,14 @@ func (th *TurnoHandler) Save(ctx *gin.Context) {
 	ctx.JSON(http.StatusCreated, savedTurno)
 }
 
+// GetTurnoByID godoc
+// @Summary      Gets a turno by id
+// @Description  Gets a turno by id from the repository
+// @Tags         turno
+// @Produce      json
+// @Param        id path string true "ID"
+// @Success      200 {object} turno.Turno
+// @Router       /turnos/{id} [get]
 func (th *TurnoHandler) GetByID(ctx *gin.Context) {
 	// obtengo el id del turno a buscar
 	strID := ctx.Param("id")
@@ -75,6 +92,14 @@ func (th *TurnoHandler) GetByID(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, turno)
 }
 
+// Replace Turno godoc
+// @Summary      Replaces a turno
+// @Description  Replaces an existing turno from the repository
+// @Tags         turno
+// @Produce      json
+// @Param        turno body turno.Turno true "Replaces a turno"
+// @Success      200 {object} turno.Turno
+// @Router       /turnos [put]
 func (th *TurnoHandler) Replace(ctx *gin.Context) {
 	// obtengo el turno
 	var turno modelo.Turno
@@ -93,6 +118,14 @@ func (th *TurnoHandler) Replace(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, updatedTurno)
 }
 
+// Update Turno godoc
+// @Summary      Udpates an turno
+// @Description  Updates an existing turno from the repository with one o more features
+// @Tags         turno
+// @Produce      json
+// @Param        id path string true "ID" - turno body request
+// @Success      200 {object} turno.Turno
+// @Router       /turnos [patch]
 func (th *TurnoHandler) Update(ctx *gin.Context) {
 	// obtengo el id
 	strID := ctx.Param("id")
@@ -119,6 +152,14 @@ func (th *TurnoHandler) Update(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, updatedTurno)
 }
 
+// Delete Turno godoc
+// @Summary      Deletes an turno
+// @Description  Deletes an existing turno from the repository
+// @Tags         turno
+// @Produce      json
+// @Param        id path string true "ID"
+// @Success      200
+// @Router       /turnos [delete]
 func (th *TurnoHandler) Delete(ctx *gin.Context) {
 	// obtengo el id
 	strID := ctx.Param("id")
@@ -139,6 +180,14 @@ func (th *TurnoHandler) Delete(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, res)
 }
 
+// GetTurnoByDNI godoc
+// @Summary      Gets a turno by paciente DNI
+// @Description  Gets a turno by paciente dni from the repository
+// @Tags         turno
+// @Produce      json
+// @Param        dni query string true "DNI"
+// @Success      200 {object} turno.Turno
+// @Router       /turnos [get]
 func (th *TurnoHandler) GetByDNI(ctx *gin.Context) {
 	// obtengo el dni
 	dni := ctx.Query("dni")

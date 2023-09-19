@@ -1,10 +1,11 @@
 package handler
 
 import (
-	"github.com/gin-gonic/gin"
 	"grupo-siete-go/internal/paciente"
 	"net/http"
 	"strconv"
+
+	"github.com/gin-gonic/gin"
 )
 
 type PacienteHandler struct {
@@ -15,6 +16,14 @@ func NewPacienteHandler(service paciente.Service) *PacienteHandler {
 	return &PacienteHandler{service: service}
 }
 
+// GetPacienteByID godoc
+// @Summary      Gets a paciente by id
+// @Description  Gets a paciente by id from the repository
+// @Tags         paciente
+// @Produce      json
+// @Param        id path string true "ID"
+// @Success      200 {object} paciente.Paciente
+// @Router       /pacientes/{id} [get]
 func (h *PacienteHandler) GetByID(ctx *gin.Context) {
 	id := ctx.Param("id")
 	ID, err := strconv.Atoi(id)
@@ -29,6 +38,15 @@ func (h *PacienteHandler) GetByID(ctx *gin.Context) {
 	}
 	ctx.JSON(http.StatusOK, paciente)
 }
+
+// Save Paciente godoc
+// @Summary      Saves a paciente
+// @Description  Saves a paciente into the repository
+// @Tags         paciente
+// @Produce      json
+// @Param        paciente body paciente.Paciente true "Saves a paciente"
+// @Success      200 {object} paciente.Paciente
+// @Router       /pacientes [post]
 func (h *PacienteHandler) Save(ctx *gin.Context) {
 	var pacienteInput paciente.Paciente
 	err := ctx.ShouldBind(&pacienteInput)
@@ -44,6 +62,14 @@ func (h *PacienteHandler) Save(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, paciente)
 }
 
+// Update Paciente godoc
+// @Summary      Udpates an paciente
+// @Description  Updates an existing paciente from the repository with one o more features
+// @Tags         paciente
+// @Produce      json
+// @Param        id path string true "ID" - paciente body request
+// @Success      200 {object} paciente.Paciente
+// @Router       /pacientes [patch]
 func (h *PacienteHandler) Update(ctx *gin.Context) {
 	id := ctx.Param("id")
 	ID, err := strconv.Atoi(id)
@@ -64,6 +90,15 @@ func (h *PacienteHandler) Update(ctx *gin.Context) {
 	}
 	ctx.JSON(http.StatusOK, paciente)
 }
+
+// Delete Paciente godoc
+// @Summary      Deletes an paciente
+// @Description  Deletes an existing paciente from the repository
+// @Tags         paciente
+// @Produce      json
+// @Param        id path string true "ID"
+// @Success      200
+// @Router       /pacientes [delete]
 func (h *PacienteHandler) Delete(ctx *gin.Context) {
 	id := ctx.Param("id")
 	ID, err := strconv.Atoi(id)
