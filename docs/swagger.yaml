@@ -1,0 +1,337 @@
+definitions:
+  odontologo.Odontologo:
+    properties:
+      apellido:
+        type: string
+      id:
+        type: integer
+      matricula:
+        type: string
+      nombre:
+        type: string
+    type: object
+  paciente.Paciente:
+    properties:
+      apellido:
+        type: string
+      dni:
+        type: string
+      domicilio:
+        type: string
+      fecha_de_alta:
+        type: string
+      id:
+        type: integer
+      nombre:
+        type: string
+    type: object
+  turno.Turno:
+    properties:
+      descripcion:
+        type: string
+      fecha_y_hora:
+        type: string
+      id:
+        type: integer
+      odontologo:
+        $ref: '#/definitions/odontologo.Odontologo'
+      paciente:
+        $ref: '#/definitions/paciente.Paciente'
+    type: object
+info:
+  contact:
+    name: Rocio Belen Ghillino, Tomás Montivero, Agustin Damelio and Nicolás Gambino
+    url: https://github.com/rrrrho/grupo-siete-go
+  description: This API Handle Pacients, Dentist and Appointments.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://developers.ctd.com.ar/es_ar/terminos-y-condiciones
+  title: Clinica Odontologia Back End 3 - Grupo 7 - Certified Tech Developer - Digital
+    House
+  version: "1.0"
+paths:
+  /odontologos:
+    delete:
+      description: Deletes an existing odontologo from the repository
+      parameters:
+      - description: Odontologo's ID in order to delete from it
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: body
+      summary: Deletes an odontologo
+      tags:
+      - odontologos
+    patch:
+      description: Updates an existing odontologo from the repository with one o more
+        features
+      parameters:
+      - description: Odontologo's ID in order to update from it
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/odontologo.Odontologo'
+      summary: Udpates an odontologo
+      tags:
+      - odontologos
+    post:
+      description: Saves a odontologo into the repository
+      parameters:
+      - description: Odontologo to save
+        in: body
+        name: odontologo
+        required: true
+        schema:
+          $ref: '#/definitions/odontologo.Odontologo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/odontologo.Odontologo'
+      summary: Saves a odontologo
+      tags:
+      - odontologos
+    put:
+      description: Replaces an existing odontologo from the repository
+      parameters:
+      - description: New odontologo used to replace
+        in: body
+        name: odontologo
+        required: true
+        schema:
+          $ref: '#/definitions/odontologo.Odontologo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/odontologo.Odontologo'
+      summary: Replaces an odontologo
+      tags:
+      - odontologos
+  /odontologos/{id}:
+    get:
+      description: Gets a odontologo by id from the repository
+      parameters:
+      - description: Odontologo's ID in order to get from it
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/odontologo.Odontologo'
+      summary: Gets a odontologo by id
+      tags:
+      - odontologos
+  /pacientes:
+    delete:
+      description: Deletes an existing paciente from the repository
+      parameters:
+      - description: Paciente's ID in order to delete from it
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: body
+      summary: Deletes a paciente
+      tags:
+      - paciente
+    patch:
+      description: Updates an existing paciente from the repository with one o more
+        features
+      parameters:
+      - description: Paciente's ID in order to update from it
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/paciente.Paciente'
+      summary: Udpates a paciente
+      tags:
+      - paciente
+    post:
+      description: Saves a paciente into the repository
+      parameters:
+      - description: Paciente to save
+        in: body
+        name: paciente
+        required: true
+        schema:
+          $ref: '#/definitions/paciente.Paciente'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/paciente.Paciente'
+      summary: Saves a paciente
+      tags:
+      - paciente
+  /pacientes/{id}:
+    get:
+      description: Gets a paciente by id from the repository
+      parameters:
+      - description: Paciente's ID in order to get from it
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/paciente.Paciente'
+      summary: Gets a paciente by id
+      tags:
+      - paciente
+  /turnos:
+    delete:
+      description: Deletes an existing turno from the repository
+      parameters:
+      - description: Turno's ID in order to delete from it
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: body
+      summary: Deletes a turno
+      tags:
+      - turno
+    get:
+      description: Gets a turno by paciente dni from the repository
+      parameters:
+      - description: Paciente's DNI in order to get Turnos from it
+        in: path
+        name: dni
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/turno.Turno'
+      summary: Gets a turno by paciente DNI
+      tags:
+      - turno
+    patch:
+      description: Updates an existing turno from the repository with one o more features
+      parameters:
+      - description: Turno's ID in order to update from it
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/turno.Turno'
+      summary: Udpates a turno
+      tags:
+      - turno
+    post:
+      description: Saves a turno into the repository
+      parameters:
+      - description: Turno to save
+        in: body
+        name: turno
+        required: true
+        schema:
+          $ref: '#/definitions/turno.Turno'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/turno.Turno'
+      summary: Saves a turno
+      tags:
+      - turno
+    put:
+      description: Replaces an existing turno from the repository
+      parameters:
+      - description: New turno used to replace
+        in: body
+        name: turno
+        required: true
+        schema:
+          $ref: '#/definitions/turno.Turno'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/turno.Turno'
+      summary: Replaces a turno
+      tags:
+      - turno
+  /turnos/{id}:
+    get:
+      description: Gets a turno by id from the repository
+      parameters:
+      - description: Turno's ID in order to get from it
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/turno.Turno'
+      summary: Gets a turno by id
+      tags:
+      - turno
+swagger: "2.0"

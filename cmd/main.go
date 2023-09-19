@@ -6,6 +6,7 @@ import (
 	"grupo-siete-go/cmd/server/external/database"
 	"grupo-siete-go/cmd/server/handler"
 	"grupo-siete-go/cmd/server/middlewares"
+	"grupo-siete-go/docs"
 	"grupo-siete-go/internal/odontologo"
 	"grupo-siete-go/internal/paciente"
 	"grupo-siete-go/internal/turno"
@@ -16,7 +17,7 @@ import (
 	"github.com/joho/godotenv"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
-	"github.com/swaggo/swag/example/basic/docs"
+	// "github.com/swaggo/swag/example/basic/docs"
 )
 
 // @title Clinica Odontologia Back End 3 - Grupo 7 - Certified Tech Developer - Digital House
@@ -58,7 +59,7 @@ func main() {
 		panic(err)
 	}
 
-	router := gin.New()
+	router := gin.Default()
 
 	//docs endpoint
 	docs.SwaggerInfo.Host = os.Getenv("HOST")
