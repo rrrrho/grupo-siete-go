@@ -148,7 +148,7 @@ func (h *OdontologosHandler) Update(ctx *gin.Context) {
 // @Summary      Deletes an odontologo
 // @Description  Deletes an existing odontologo from the repository
 // @Tags         odontologos
-// @Produce      json
+// @Produce      string
 // @Param        id path int true "Odontologo's ID in order to delete from it"
 // @Success      200 {body} string
 // @Router       /odontologos [delete]

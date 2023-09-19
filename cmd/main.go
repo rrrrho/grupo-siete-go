@@ -35,21 +35,16 @@ func main() {
 		panic(errors.New("env variable does not exits"))
 	}
 
-	// if env == "local" {
-	// 	err := godotenv.Load()
-	// 	if err != nil {
-	// 		panic(err)
-	// 	}
-	// }
-
 	cfg, err := config.NewConfig(env)
 
 	if err != nil {
 		panic(err)
 	}
 
+	//Authentication
 	authMidd := middlewares.NewAuth(cfg.PublicConfig.PlubicKey, cfg.PrivateConfig.SecretKey)
 
+	//Data Base
 	mySqlDatabase, err := database.NewMySQLDatabase(cfg.PublicConfig.MySQLHost,
 		cfg.PublicConfig.MySQLPort, cfg.PublicConfig.MySQLUser, cfg.PrivateConfig.MySQLPassword,
 		cfg.PublicConfig.MySQLDatabase)
@@ -64,6 +59,7 @@ func main() {
 	docs.SwaggerInfo.Host = os.Getenv("HOST")
 	router.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
+	//Network check
 	router.GET("/ping", func(context *gin.Context) {
 		context.JSON(http.StatusOK, gin.H{"ok": "ok"})
 	})
@@ -100,9 +96,9 @@ func main() {
 
 	pacienteGroup := router.Group("/pacientes")
 	pacienteGroup.GET("/:id", pacienteHandler.GetByID)
-	pacienteGroup.POST("", pacienteHandler.Save)
-	pacienteGroup.PATCH("/:id", pacienteHandler.Update)
-	pacienteGroup.DELETE("/:id", pacienteHandler.Delete)
+	pacienteGroup.POST("", authMidd.AuthHeader, pacienteHandler.Save)
+	pacienteGroup.PATCH("/:id", authMidd.AuthHeader, pacienteHandler.Update)
+	pacienteGroup.DELETE("/:id", authMidd.AuthHeader, pacienteHandler.Delete)
 
 	err = router.Run()
 

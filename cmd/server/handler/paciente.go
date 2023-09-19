@@ -95,7 +95,7 @@ func (h *PacienteHandler) Update(ctx *gin.Context) {
 // @Summary      Deletes a paciente
 // @Description  Deletes an existing paciente from the repository
 // @Tags         paciente
-// @Produce      json
+// @Produce      string
 // @Param        id path int true "Paciente's ID in order to delete from it"
 // @Success      200 {body} string
 // @Router       /pacientes [delete]

@@ -156,7 +156,7 @@ func (th *TurnoHandler) Update(ctx *gin.Context) {
 // @Summary      Deletes a turno
 // @Description  Deletes an existing turno from the repository
 // @Tags         turno
-// @Produce      json
+// @Produce      string
 // @Param        id path int true "Turno's ID in order to delete from it"
 // @Success      200 {body} string
 // @Router       /turnos [delete]
