@@ -42,7 +42,7 @@ func NewTurnoHandler(creator TurnoCreator, getter TurnoGetter, updater TurnoUpda
 // @Description  Saves a turno into the repository
 // @Tags         turno
 // @Produce      json
-// @Param        turno body turno.Turno true "Saves a turno"
+// @Param        turno body turno.Turno true "Turno to save"
 // @Success      200 {object} turno.Turno
 // @Router       /turnos [post]
 func (th *TurnoHandler) Save(ctx *gin.Context) {
@@ -69,7 +69,7 @@ func (th *TurnoHandler) Save(ctx *gin.Context) {
 // @Description  Gets a turno by id from the repository
 // @Tags         turno
 // @Produce      json
-// @Param        id path string true "ID"
+// @Param        id path int true "Turno's ID in order to get from it"
 // @Success      200 {object} turno.Turno
 // @Router       /turnos/{id} [get]
 func (th *TurnoHandler) GetByID(ctx *gin.Context) {
@@ -97,7 +97,7 @@ func (th *TurnoHandler) GetByID(ctx *gin.Context) {
 // @Description  Replaces an existing turno from the repository
 // @Tags         turno
 // @Produce      json
-// @Param        turno body turno.Turno true "Replaces a turno"
+// @Param        turno body turno.Turno true "New turno used to replace"
 // @Success      200 {object} turno.Turno
 // @Router       /turnos [put]
 func (th *TurnoHandler) Replace(ctx *gin.Context) {
@@ -119,11 +119,11 @@ func (th *TurnoHandler) Replace(ctx *gin.Context) {
 }
 
 // Update Turno godoc
-// @Summary      Udpates an turno
+// @Summary      Udpates a turno
 // @Description  Updates an existing turno from the repository with one o more features
 // @Tags         turno
 // @Produce      json
-// @Param        id path string true "ID" - turno body request
+// @Param        id path int true "Turno's ID in order to update from it"
 // @Success      200 {object} turno.Turno
 // @Router       /turnos [patch]
 func (th *TurnoHandler) Update(ctx *gin.Context) {
@@ -153,12 +153,12 @@ func (th *TurnoHandler) Update(ctx *gin.Context) {
 }
 
 // Delete Turno godoc
-// @Summary      Deletes an turno
+// @Summary      Deletes a turno
 // @Description  Deletes an existing turno from the repository
 // @Tags         turno
 // @Produce      json
-// @Param        id path string true "ID"
-// @Success      200
+// @Param        id path int true "Turno's ID in order to delete from it"
+// @Success      200 {body} string
 // @Router       /turnos [delete]
 func (th *TurnoHandler) Delete(ctx *gin.Context) {
 	// obtengo el id
@@ -185,7 +185,7 @@ func (th *TurnoHandler) Delete(ctx *gin.Context) {
 // @Description  Gets a turno by paciente dni from the repository
 // @Tags         turno
 // @Produce      json
-// @Param        dni query string true "DNI"
+// @Param        dni path string true "Paciente's DNI in order to get Turnos from it"
 // @Success      200 {object} turno.Turno
 // @Router       /turnos [get]
 func (th *TurnoHandler) GetByDNI(ctx *gin.Context) {

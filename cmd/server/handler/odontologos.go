@@ -46,7 +46,7 @@ func NewOdontologoHandler(getter OdontologoGetter, creator OdontologoCreator, up
 // @Description  Gets a odontologo by id from the repository
 // @Tags         odontologos
 // @Produce      json
-// @Param        id path string true "ID"
+// @Param        id path int true "Odontologo's ID in order to get from it"
 // @Success      200 {object} odontologo.Odontologo
 // @Router       /odontologos/{id} [get]
 func (h *OdontologosHandler) GetByID(ctx *gin.Context) {
@@ -69,7 +69,7 @@ func (h *OdontologosHandler) GetByID(ctx *gin.Context) {
 // @Description  Saves a odontologo into the repository
 // @Tags         odontologos
 // @Produce      json
-// @Param        odontologo body odontologo.Odontologo true "odontologo to save"
+// @Param        odontologo body odontologo.Odontologo true "Odontologo to save"
 // @Success      200 {object} odontologo.Odontologo
 // @Router       /odontologos [post]
 func (h *OdontologosHandler) Save(ctx *gin.Context) {
@@ -94,7 +94,7 @@ func (h *OdontologosHandler) Save(ctx *gin.Context) {
 // @Description  Replaces an existing odontologo from the repository
 // @Tags         odontologos
 // @Produce      json
-// @Param        odontologo body odontologo.Odontologo true "odontologo to save"
+// @Param        odontologo body odontologo.Odontologo true "New odontologo used to replace"
 // @Success      200 {object} odontologo.Odontologo
 // @Router       /odontologos [put]
 func (h *OdontologosHandler) Replace(ctx *gin.Context) {
@@ -118,7 +118,7 @@ func (h *OdontologosHandler) Replace(ctx *gin.Context) {
 // @Description  Updates an existing odontologo from the repository with one o more features
 // @Tags         odontologos
 // @Produce      json
-// @Param        id path int true "ID" - odontologo body request
+// @Param        id path int true "Odontologo's ID in order to update from it"
 // @Success      200 {object} odontologo.Odontologo
 // @Router       /odontologos [patch]
 func (h *OdontologosHandler) Update(ctx *gin.Context) {
@@ -149,8 +149,8 @@ func (h *OdontologosHandler) Update(ctx *gin.Context) {
 // @Description  Deletes an existing odontologo from the repository
 // @Tags         odontologos
 // @Produce      json
-// @Param        id path string true "ID"
-// @Success      200
+// @Param        id path int true "Odontologo's ID in order to delete from it"
+// @Success      200 {body} string
 // @Router       /odontologos [delete]
 func (h *OdontologosHandler) Delete(ctx *gin.Context) {
 	// obtengo el id

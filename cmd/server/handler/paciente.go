@@ -21,7 +21,7 @@ func NewPacienteHandler(service paciente.Service) *PacienteHandler {
 // @Description  Gets a paciente by id from the repository
 // @Tags         paciente
 // @Produce      json
-// @Param        id path string true "ID"
+// @Param        id path int true "Paciente's ID in order to get from it"
 // @Success      200 {object} paciente.Paciente
 // @Router       /pacientes/{id} [get]
 func (h *PacienteHandler) GetByID(ctx *gin.Context) {
@@ -44,7 +44,7 @@ func (h *PacienteHandler) GetByID(ctx *gin.Context) {
 // @Description  Saves a paciente into the repository
 // @Tags         paciente
 // @Produce      json
-// @Param        paciente body paciente.Paciente true "Saves a paciente"
+// @Param        paciente body paciente.Paciente true "Paciente to save"
 // @Success      200 {object} paciente.Paciente
 // @Router       /pacientes [post]
 func (h *PacienteHandler) Save(ctx *gin.Context) {
@@ -63,11 +63,11 @@ func (h *PacienteHandler) Save(ctx *gin.Context) {
 }
 
 // Update Paciente godoc
-// @Summary      Udpates an paciente
+// @Summary      Udpates a paciente
 // @Description  Updates an existing paciente from the repository with one o more features
 // @Tags         paciente
 // @Produce      json
-// @Param        id path string true "ID" - paciente body request
+// @Param        id path int true "Paciente's ID in order to update from it"
 // @Success      200 {object} paciente.Paciente
 // @Router       /pacientes [patch]
 func (h *PacienteHandler) Update(ctx *gin.Context) {
@@ -92,12 +92,12 @@ func (h *PacienteHandler) Update(ctx *gin.Context) {
 }
 
 // Delete Paciente godoc
-// @Summary      Deletes an paciente
+// @Summary      Deletes a paciente
 // @Description  Deletes an existing paciente from the repository
 // @Tags         paciente
 // @Produce      json
-// @Param        id path string true "ID"
-// @Success      200
+// @Param        id path int true "Paciente's ID in order to delete from it"
+// @Success      200 {body} string
 // @Router       /pacientes [delete]
 func (h *PacienteHandler) Delete(ctx *gin.Context) {
 	id := ctx.Param("id")
